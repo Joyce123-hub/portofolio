@@ -1,0 +1,801 @@
+:root{
+    --primary: #1565d8;         /* deep blue (data/analytics) */
+    --accent:  #00bfa5;         /* teal accent */
+    --muted:   #6b7280;         /* neutral muted */
+    --bg:      #f6f8fb;         /* page background */
+    --card:    #ffffff;         /* card background */
+    --text:    #0f1724;         /* primary text */
+    --soft:    #eef3fb;         /* subtle surfaces */
+    --shadow:  0 10px 30px rgba(16,24,40,0.06);
+    --glass:   rgba(255,255,255,0.6);
+    --transition: 250ms cubic-bezier(.2,.9,.3,1);
+    --radius: 12px;
+}
+
+[data-theme="dark"]{
+    --primary: #4f8cf5;
+    --accent:  #1db7a9;
+    --muted:   #9aa4b2;
+    --bg:      #0b1220;
+    --card:    #0f1724;
+    --text:    #e6eef8;
+    --soft:    rgba(255,255,255,0.03);
+    --shadow:  0 10px 30px rgba(2,6,23,0.7);
+}
+
+/* Reset + base */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+    font-family: 'Inter', 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg,var(--bg), #fff);
+    color: var(--text);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+    margin:0;
+    padding:0;
+    transition: background var(--transition), color var(--transition);
+}
+
+/* Layout helpers */
+.container{max-width:1120px;margin:0 auto;padding:0 20px}
+.section{padding:72px 0}
+
+/* Navigation */
+.navbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 20px;position:fixed;top:0;left:0;right:0;z-index:60;
+    background:transparent;backdrop-filter: blur(6px);
+    transition: background 300ms ease, box-shadow 300ms ease, transform 300ms ease;
+}
+.navbar.scrolled{
+    background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.45));
+    box-shadow: var(--shadow);
+    transform: translateY(0);
+}
+[data-theme="dark"] .navbar.scrolled{
+    background: linear-gradient(180deg, rgba(10,14,20,0.7), rgba(10,14,20,0.5));
+}
+
+.navbar-brand{font-weight:700;font-size:1.25rem;color:var(--primary)}
+.navbar .nav-link{
+    color:var(--muted);margin-left:18px;text-decoration:none;font-weight:600;font-size:.95rem;position:relative;
+}
+.navbar .nav-link:hover{color:var(--text)}
+.navbar .nav-link::after{
+    content:"";position:absolute;left:0;bottom:-6px;height:3px;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width var(--transition);
+}
+.navbar .nav-link:hover::after,.navbar .nav-link.active::after{width:100%}
+
+/* Hero */
+.hero-section{
+    /* switch to a two-column grid for predictable layout (image + text) */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    min-height:72vh;
+    padding-top:120px;
+}
+.hero-inner{display:flex;gap:48px;align-items:center}
+.hero-copy{max-width:620px}
+.hero-title{font-size:2.6rem;line-height:1.02;margin:0 0 12px;font-weight:800;color:var(--text)}
+.hero-subtitle{font-size:1.05rem;color:var(--muted);margin-bottom:18px}
+.hero-kicker{display:inline-block;padding:.25rem .6rem;background:var(--soft);border-radius:999px;color:var(--primary);font-weight:700;margin-bottom:12px;font-size:.85rem}
+
+/* container for the photo in the about/hero area */
+.hero-image {
+    width: 100%;
+    max-width: 520px;            /* limit visual width on large screens */
+    justify-self: start;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(16,24,40,0.08);
+    background: linear-gradient(180deg, var(--card), var(--soft));
+}
+
+/* ensure the image fits the container without overflow or stretching */
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 72vh;
+    object-fit: cover;
+    display: block;
+}
+
+/* Buttons */
+.btn{
+    display:inline-flex;align-items:center;gap:.6rem;padding:.6rem 1rem;border-radius:10px;font-weight:700;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 220ms ease;
+    cursor:pointer;border:0;text-decoration:none;color:white;background:var(--primary);
+}
+.btn.secondary{background:transparent;color:var(--primary);border:1px solid rgba(21,101,216,0.12)}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:.65;cursor:not-allowed}
+
+/* Cards */
+.card{
+    background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;
+    transition: transform 300ms cubic-bezier(.2,.9,.3,1), box-shadow 300ms ease;
+}
+.card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(12,20,35,0.08)}
+
+/* Projects*/
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:960px){.projects-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.projects-grid{grid-template-columns:1fr}}
+
+.project-card{
+    border-radius:14px;overflow:hidden;background:linear-gradient(180deg,var(--card),var(--soft));display:flex;flex-direction:column;height:100%;
+}
+.project-image{height:180px;overflow:hidden;flex-shrink:0}
+.project-image img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.9,.2,1)}
+.project-card:hover .project-image img{transform:scale(1.08)}
+.project-content{padding:16px;flex:1;display:flex;flex-direction:column}
+.project-title{font-weight:700;margin-bottom:6px;font-size:1.05rem}
+.project-description{color:var(--muted);font-size:.95rem;margin-bottom:auto}
+
+/* Skills */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:960px){.skills-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.skills-grid{grid-template-columns:1fr}}
+
+.skill-item{padding:16px;border-radius:12px;background:var(--card);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px}
+.skill-header{display:flex;align-items:center;gap:12px}
+.skill-header i{font-size:1.9rem;color:var(--primary)}
+.skill-title{font-weight:700;color:var(--text)}
+.skill-meta{color:var(--muted);font-size:.92rem}
+
+/* Progress */
+.progress{height:10px;background:linear-gradient(90deg, rgba(16,24,40,0.04), rgba(16,24,40,0.02));border-radius:999px;overflow:hidden}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width 950ms cubic-bezier(.2,.9,.3,1)}
+
+/* Contact form */
+.contact-form-container{
+    background:linear-gradient(180deg,var(--card),var(--soft));padding:28px;border-radius:14px;box-shadow:var(--shadow);
+    max-width:780px;margin:0 auto;
+}
+.form-row{display:flex;gap:12px}
+@media (max-width:760px){.form-row{flex-direction:column}}
+.form-control{width:100%;padding:12px 14px;border-radius:10px;border:1px solid rgba(10,14,20,0.06);background:transparent;transition:box-shadow var(--transition),border-color var(--transition)}
+.form-control:focus{outline:none;box-shadow:0 6px 18px rgba(21,101,216,0.08);border-color:rgba(21,101,216,0.18)}
+
+/* Alerts */
+.alert{padding:12px 14px;border-radius:10px;font-weight:600}
+.alert-success{background:#e8f7f3;color:#0b6b56;border:1px solid rgba(0,191,165,0.09)}
+.alert-danger{background:#fff0f0;color:#7a1414;border:1px solid rgba(220,54,69,0.06)}
+
+/* Tiny UI details */
+.section-title{font-size:1.6rem;font-weight:800;margin-bottom:18px;color:var(--text)}
+.subtle{color:var(--muted);font-size:.95rem}
+
+/* Animations on scroll & reveal */
+.will-animate{opacity:0;transform:translateY(18px) scale(.996);transition:opacity .75s cubic-bezier(.2,.9,.3,1), transform .75s cubic-bezier(.2,.9,.3,1)}
+.animate-in{opacity:1;transform:none}
+
+/* Ripple utility - minimal */
+.ripple{position:absolute;border-radius:50%;pointer-events:none;transform:scale(0);opacity:.14;background:var(--primary);transition:transform .55s cubic-bezier(.2,.9,.2,1),opacity .6s}
+
+/* Focus accessibility */
+.show-focus :focus{outline:3px solid rgba(21,101,216,0.16);outline-offset:4px;border-radius:8px}
+
+/* Footer */
+footer{padding:36px 0;background:transparent;color:var(--muted);text-align:center;margin-top:60px}
+
+/* Small helpers */
+.kv{display:flex;gap:8px;align-items:center}
+.badge{background:var(--soft);padding:.35rem .6rem;border-radius:999px;color:var(--muted);font-weight:700;font-size:.85rem}
+
+/* changed code: profile/avatar container - fixed circular, responsive, no-overlap */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+    flex-wrap: nowrap; /* keep avatar and text on same row when space allows */
+    margin-bottom: 8px;
+}
+
+/* Circular avatar container that sizes responsively but never exceeds viewport */
+.profile-avatar {
+    width: clamp(72px, 18vw, 140px);
+    height: clamp(72px, 18vw, 140px);
+    flex: 0 0 auto;                 /* prevent image shrinking that causes overlap */
+    border-radius: 50%;
+    overflow: hidden;               /* ensures perfect circle clip */
+    box-shadow: 0 10px 30px rgba(16,24,40,0.12);
+    border: 3px solid rgba(255,255,255,0.9);
+    background: linear-gradient(135deg, rgba(21,101,216,0.04), rgba(0,191,165,0.02));
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure the actual img fills the circular container and doesn't overflow */
+.profile-avatar img,
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+/* Text side should shrink/wrap instead of overlapping image */
+.profile .profile-content {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+/* changed code: improved hero & avatar layout to prevent overlap, responsive circular avatar */
+
+.hero-section{
+    /* switch to a two-column grid for predictable layout (image + text) */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: center;
+    min-height:72vh;
+    padding-top:120px;
+}
+
+/* container for the photo in the about/hero area */
+.hero-image {
+    width: 100%;
+    max-width: 520px;            /* limit visual width on large screens */
+    justify-self: start;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 18px 40px rgba(16,24,40,0.08);
+    background: linear-gradient(180deg, var(--card), var(--soft));
+}
+
+/* ensure the image fits the container without overflow or stretching */
+.hero-image img {
+    width: 100%;
+    height: 100%;
+    max-height: 72vh;
+    object-fit: cover;
+    display: block;
+}
+
+/* profile block: allow wrapping when space is tight so text flows under the image instead of overlapping */
+.profile {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+    flex-wrap: wrap; /* changed: allow wrap to prevent overlap on narrow screens */
+    margin-bottom: 8px;
+}
+
+/* circular avatar container that clamps to viewport and never overflows */
+.profile-avatar {
+    width: clamp(72px, 16vw, 140px);
+    height: clamp(72px, 16vw, 140px);
+    flex: 0 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(16,24,40,0.12);
+    border: 3px solid rgba(255,255,255,0.9);
+    background: linear-gradient(135deg, rgba(21,101,216,0.04), rgba(0,191,165,0.02));
+    position: relative;
+    z-index: 2; /* keep avatar above background elements but below floating UI */
+}
+
+/* force the image to fill the circular container */
+.profile-avatar img,
+.profile-pic {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+/* text area next to avatar must shrink/wrap, not overlap */
+.profile .profile-content {
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+/* Mobile / small screens: stack and reduce sizes */
+@media (max-width: 960px) {
+    .hero-section {
+        grid-template-columns: 1fr; /* stack image and text vertically */
+        padding-top: 80px;
+    }
+    .hero-image {
+        margin: 0 auto;
+        max-width: 420px;
+    }
+    .hero-image img { max-height: 48vh; }
+    .profile {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+    .profile-avatar {
+        width: clamp(64px, 22vw, 120px);
+        height: clamp(64px, 22vw, 120px);
+        margin-bottom: 12px;
+    }
+    .hero-copy { padding: 0 12px; }
+}
+
+/* If avatar was absolutely positioned elsewhere, neutralize that to avoid overlap */
+.profile-pic.absolute {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: none !important;
+    z-index: 2;
+}
+
+/* changed code: about section image -> circular, responsive, prevents overlap with text */
+.about-section .row { align-items: center; }
+
+/* make the image container a responsive square and circular clip */
+.about-image-container {
+    width: clamp(120px, 28vw, 420px); /* responsive size */
+    aspect-ratio: 1 / 1;              /* keep square */
+    border-radius: 50%;               /* circular container */
+    overflow: hidden;                 /* clip image to circle */
+    margin: 0 auto;                   /* center inside column */
+    box-shadow: 0 14px 36px rgba(16,24,40,0.12);
+    background: linear-gradient(180deg, var(--card), var(--soft));
+}
+
+/* image fills the circular container without stretching */
+.about-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ensure the left column centers the avatar and does not overflow */
+.about-section .col-lg-5 { display: flex; justify-content: center; align-items: center; }
+
+/* ensure text column can shrink and wrap instead of overlapping */
+.about-section .col-lg-7 { min-width: 0; }
+
+/* spacing for about text to avoid touching the circle */
+.about-text { margin-bottom: 1rem; max-width: 850px; }
+
+/* Mobile: stack and reduce avatar size */
+@media (max-width: 960px) {
+    .about-image-container { width: clamp(96px, 30vw, 200px); aspect-ratio: 1/1; margin-bottom: 18px; }
+    .about-section { padding-top: 80px; }
+    .about-section .col-lg-5, .about-section .col-lg-7 { width: 100%; max-width: 100%; }
+    .about-text { text-align: center; }
+}
+
+/* changed code: theme-toggle visibility + back-to-top styles */
+
+/* Theme toggle button (visible on both light and dark navbar states) */
+.navbar .theme-toggle,
+.navbar .theme-toggle i {
+    transition: color .2s ease, background .2s ease, border-color .2s ease;
+}
+
+/* Default when navbar is transparent (light background behind navbar) */
+.navbar .theme-toggle {
+    color: var(--text);
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(16,24,40,0.06);
+    box-shadow: none;
+}
+
+/* When navbar becomes scrolled (solid/light background) ensure contrast */
+.navbar.scrolled .theme-toggle {
+    background: var(--card);
+    color: var(--text);
+    border-color: rgba(16,24,40,0.08);
+    box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+}
+
+/* Dark theme variants */
+[data-theme="dark"] .navbar .theme-toggle {
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+    border-color: rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .navbar.scrolled .theme-toggle {
+    background: rgba(255,255,255,0.02);
+    border-color: rgba(255,255,255,0.12);
+    box-shadow: 0 6px 18px rgba(2,6,23,0.55);
+}
+
+/* Toggler icon color for collapsed menu (mobile) */
+.navbar-toggler { border-color: rgba(16,24,40,0.06); }
+[data-theme="dark"] .navbar-toggler { border-color: rgba(255,255,255,0.08); }
+
+/* Back to top button */
+.back-to-top {
+    position: fixed;
+    right: 20px;
+    bottom: 22px;
+    width: 46px;
+    height: 46px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: #fff;
+    box-shadow: 0 12px 30px rgba(16,24,40,0.14);
+    z-index: 1200;
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(8px);
+    pointer-events: none;
+    transition: opacity .22s ease, transform .22s ease;
+    border: 0;
+}
+.back-to-top i{ font-size: 14px; }
+
+/* Visible state */
+.back-to-top.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+/* Dark theme variant */
+[data-theme="dark"] .back-to-top {
+    background: var(--accent);
+    color: #0b1220;
+}
+
+/* Small screens: move button slightly left to avoid FAB overlap */
+@media (max-width: 480px) {
+    .back-to-top { right: 12px; bottom: 14px; width: 44px; height:44px; }
+}
+
+/* changed code: ensure navbar links & toggler are always visible, and collapsed menu has readable background */
+.navbar { z-index: 9999; }
+
+/* nav links visible in both light and dark states */
+.navbar .nav-link {
+    color: var(--text) !important;
+    opacity: 0.98;
+    transition: color .18s ease, opacity .18s ease;
+}
+.navbar .nav-link:hover,
+.navbar .nav-link:focus { color: var(--primary) !important; opacity: 1; }
+
+/* ensure scrolled state keeps contrast */
+.navbar.scrolled .nav-link { color: var(--text) !important; }
+
+/* Better visibility for collapsed (mobile) menu when opened */
+@media (max-width: 991px) {
+    .navbar-collapse.collapse.show {
+        background: var(--card);
+        padding: 0.75rem 1rem;
+        margin-top: 8px;
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+    }
+    .navbar-collapse .nav-link {
+        color: var(--text) !important;
+        padding: .6rem 0.5rem;
+        display: block;
+    }
+}
+
+/* Make the toggler icon clearly visible (draw three bars using currentColor) */
+.navbar-toggler {
+    color: var(--text);
+    border: 1px solid rgba(16,24,40,0.06);
+    background: transparent;
+}
+.navbar-toggler:focus { box-shadow: 0 6px 18px rgba(21,101,216,0.08); outline: none; }
+
+/* Replace the default SVG with 3 horizontal bars that use currentColor */
+.navbar-toggler-icon {
+    width: 1.6em;
+    height: 1.2em;
+    display: inline-block;
+    background-image:
+        linear-gradient(currentColor, currentColor),
+        linear-gradient(currentColor, currentColor),
+        linear-gradient(currentColor, currentColor);
+    background-size: 100% 2px, 100% 2px, 100% 2px;
+    background-position: center top, center center, center bottom;
+    background-repeat: no-repeat;
+    opacity: 0.95;
+}
+
+/* adjust toggler contrast in dark theme */
+[data-theme="dark"] .navbar-toggler,
+[data-theme="dark"] .navbar-toggler-icon {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.06);
+}
+
+/* small tweak: ensure brand is always readable */
+.navbar .navbar-brand { color: var(--primary) !important; }
+
+/* changed code: ensure about/avatar is a true circular container, centered, responsive, no-overlap */
+
+.about-section .col-lg-5 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 1rem;
+    min-height: 0;
+}
+
+/* circular container keeps a 1:1 aspect ratio so it never becomes an oval */
+.about-image-container,
+.profile-avatar {
+    width: clamp(110px, 20vw, 280px);    /* responsive sizing */
+    aspect-ratio: 1 / 1;                 /* force square */
+    border-radius: 50%;                  /* circle */
+    overflow: hidden;                    /* clip image */
+    display: inline-block;
+    box-shadow: 0 18px 48px rgba(16,24,40,0.12);
+    border: 4px solid rgba(255,255,255,0.85);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    margin: 0 auto;
+    transform: none !important;         /* remove any previous transform that stretched it */
+}
+
+/* image fills the circular container without distortion */
+.about-image,
+.profile-pic,
+.about-image-container img,
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 50%;
+}
+
+/* smaller on mobile and stack nicely */
+@media (max-width: 960px) {
+    .about-image-container, .profile-avatar { width: clamp(84px, 28vw, 160px); }
+    .about-section .col-lg-5 { margin-bottom: 1rem; }
+}
+
+/* changed code: refined typography and text effects for About (data analyst profile) */
+
+/* prefer Inter for UI text, fall back to Poppins for headings */
+body {
+    font-family: 'Inter', 'Poppins', system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    color: var(--text);
+}
+
+/* gradient heading style */
+.gradient-title {
+    font-family: 'Poppins', 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 2rem;
+    letter-spacing: -0.02em;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 0.6rem;
+}
+
+/* lead paragraph styling for clarity */
+.lead.about-text {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: rgba(15,23,36,0.92);
+    text-wrap: balance;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.02);
+}
+
+/* subtle paragraph style */
+.about-text.subtle {
+    color: var(--muted);
+    font-size: 0.98rem;
+}
+
+/* info list */
+.about-section .list-unstyled li {
+    display:flex;
+    align-items:center;
+    gap:0.6rem;
+    color:var(--muted);
+    font-weight:600;
+}
+
+/* Avatar refinements (ensure perfectly circular, crisp border, responsive) */
+.profile-avatar {
+    width: clamp(110px, 20vw, 320px);
+    height: clamp(110px, 20vw, 320px);
+    border-radius: 50%;
+    overflow: hidden;
+    display:inline-block;
+    box-shadow: 0 20px 50px rgba(16,24,40,0.12);
+    border: 4px solid rgba(255,255,255,0.7);
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+}
+
+/* image fills container */
+.profile-avatar img,
+.profile-pic,
+.about-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display:block;
+    border-radius: 50%;
+}
+
+/* small animation on load for heading & image */
+.about-section .profile-avatar { transform: translateY(6px); opacity: 0; transition: transform .6s var(--transition), opacity .6s ease; }
+.about-section .gradient-title { transform: translateY(6px); opacity: 0; transition: transform .6s var(--transition), opacity .6s ease; }
+
+body.loaded .about-section .profile-avatar,
+body.loaded .about-section .gradient-title {
+    transform: none;
+    opacity: 1;
+}
+
+/* ensure adequate spacing on small screens */
+@media (max-width: 960px) {
+    .gradient-title { font-size: 1.6rem; }
+    .lead.about-text { font-size: 1rem; }
+    .profile-avatar { margin-bottom: 14px; }
+}
+
+/* end changed code */
+
+/* -------------------- Contact page specific styles -------------------- */
+.contact-section {
+    padding: 96px 0 64px;
+}
+
+.contact-grid {
+    display: grid;
+    /* responsive: fixed on desktop, fluid on tablet, stacked on mobile */
+    grid-template-columns: clamp(280px, 1fr, 520px) clamp(280px, 1fr, 320px);
+    gap: clamp(16px, 3vw, 32px);
+    align-items: start;
+    max-width: 900px;
+    margin: 18px auto 0;
+    justify-content: center;
+    padding: 0 clamp(12px, 4vw, 20px);
+}
+
+/* tablet and large screens: maintain side-by-side layout */
+@media (min-width: 921px) {
+    .contact-grid {
+        grid-template-columns: 520px 320px;
+        gap: 32px;
+    }
+}
+
+/* medium screens: still side-by-side but shrink gracefully */
+@media (min-width: 768px) and (max-width: 920px) {
+    .contact-grid {
+        grid-template-columns: 1fr 280px;
+        gap: 20px;
+        padding: 0 16px;
+    }
+    .contact-section .contact-form-container {
+        width: 100%;
+    }
+    .contact-info {
+        width: 280px;
+        justify-self: end;
+    }
+}
+
+/* small screens: stack form over aside */
+@media (max-width: 767px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+        padding: 0 12px;
+    }
+    .contact-section .contact-form-container {
+        width: 100%;
+    }
+}
+
+/* Make the right column (contact-info) visually match cards elsewhere */
+.contact-info {
+    background: linear-gradient(180deg,var(--card),var(--soft));
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    color: var(--text);
+}
+
+.contact-info h3 { margin-top: 0; margin-bottom: 8px; font-size:1.05rem }
+.contact-info p { color: var(--muted); margin: 6px 0 }
+
+.map-placeholder {
+    margin-top: 12px;
+    height: 180px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(16,24,40,0.02), rgba(16,24,40,0.01));
+    display:flex;align-items:center;justify-content:center;color:var(--muted);
+    font-weight:700;border:1px dashed rgba(15,23,36,0.04)
+}
+
+/* Form inputs inside the contact form (form-control exists but inputs may not use that class) */
+.contact-form label{display:block;margin-top:14px;font-weight:700;color:var(--text);font-size:0.95rem}
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form textarea,
+.contact-form input[type="tel"]{
+    width:100%;
+    padding:14px 16px;
+    border-radius:10px;
+    border:1px solid rgba(16,24,40,0.06);
+    background:transparent;
+    color:var(--text);
+    font-size:1rem;
+    font-family: inherit;
+    line-height: 1.5;
+    transition:box-shadow var(--transition),border-color var(--transition);
+}
+.contact-form input[type="text"],
+.contact-form input[type="email"],
+.contact-form input[type="tel"]{
+    min-height: 44px;
+}
+.contact-section .contact-form-container{
+    /* override general contact-form-container only on the contact page so other pages stay unchanged */
+    width:520px;
+    max-width:100%;
+    padding:22px 18px;
+    margin:0;
+    align-self:start; /* prevent the form card from stretching to match the aside */
+}
+
+.contact-form textarea{min-height:160px;resize:vertical}
+.contact-form input:focus, .contact-form textarea:focus{outline:none;box-shadow:0 8px 30px rgba(21,101,216,0.06);border-color:rgba(21,101,216,0.16)}
+
+/* increase touch-friendly sizes on mobile */
+@media (max-width: 767px) {
+    .contact-form label { margin-top: 12px; }
+    .contact-form input[type="text"],
+    .contact-form input[type="email"],
+    .contact-form textarea,
+    .contact-form input[type="tel"] {
+        padding: 16px 14px;
+        font-size: 1.05rem;
+    }
+    .contact-form textarea { min-height: 140px; }
+}
+
+.form-actions{display:flex;gap:12px;align-items:center;margin-top:18px;flex-wrap:wrap}
+.form-actions .btn{padding:12px 18px;border-radius:10px;font-size:0.95rem}
+
+/* button scaling for mobile */
+@media (max-width: 767px) {
+    .form-actions { gap: 8px; margin-top: 16px; }
+    .form-actions .btn { padding: 12px 16px; font-size: 1rem; }
+    .form-actions .btn i { font-size: 0.9rem; }
+}
+
+/* Message area already created by script.js; make sure it sits nicely */
+#formMessage{min-height:28px}
+
+/* Smaller screens: stack columns and keep spacing comfortable */
+@media (max-width: 920px) {
+    .contact-grid{grid-template-columns:1fr;gap:18px;padding:0 16px}
+    .contact-form-container{max-width:100%;padding:20px}
+    .contact-info{order:2}
+}
+
+/* Small tweaks to ensure visual rhythm with other sections */
+.contact-page .section-title{margin-bottom:6px;font-size:clamp(1.4rem, 5vw, 1.6rem)}
+.contact-page .lead{margin-bottom:24px;color:var(--muted);font-size:clamp(0.95rem, 3vw, 1.05rem)}
+
+/* make sure the test button doesn't visually compete with primary send */
+.contact-form .btn-secondary{background:transparent;color:var(--muted);border:1px solid rgba(16,24,40,0.06)}
+
+/* subtle responsiveness for map placeholder */
+@media (max-width:480px){.map-placeholder{height:140px}}
+
+/* End contact-specific rules */
